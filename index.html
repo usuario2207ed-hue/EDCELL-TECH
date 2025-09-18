@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>🔋 EDCELL-TECH</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #0f0;
+    font-family: Consolas, monospace;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-y: scroll;
+  }
+
+  canvas#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #000;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 36px;
+    margin: 40px 0 20px 0;
+    position: relative;
+    color: #0f0;
+    text-shadow: 0 0 8px #0f0;
+    transition: opacity 0.1s;
+  }
+
+  .menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    z-index: 2;
+  }
+
+  .menu a {
+    text-decoration: none;
+    color: #0f0;
+    border: 2px solid #0f0;
+    padding: 14px 28px;
+    border-radius: 8px;
+    width: 260px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    background: rgba(0,0,0,0.6);
+    transition: transform 0.4s ease, background 0.3s ease;
+    overflow: hidden;
+  }
+
+  .menu a:hover {
+    background: rgba(0, 255, 0, 0.15);
+    transform: scale(1.05);
+  }
+
+  .menu a.clicked {
+    animation: goBack 1s forwards;
+  }
+
+  @keyframes goBack {
+    0% { transform: scale(1) translateY(0) rotate(0); opacity: 1; }
+    100% { transform: scale(0.1) translateY(300px) rotate(720deg); opacity: 0; }
+  }
+
+footer {
+    background: transparent;
+    color: #0f0;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+    animation: blink 1s step-start infinite;
+    animation-delay: 10s;
+    z-index: 2;
+}
+
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .letter {
+    position: fixed;
+    font-size: 40px;
+    color: #0f0;
+    pointer-events: none;
+    animation: explode 5s forwards;
+    z-index: 10;
+    text-shadow: 0 0 12px #0f0, 0 0 24px #0f0;
+  }
+
+  @keyframes explode {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(2); }
+  }
+</style>
+</head>
+<body>
+
+  <canvas id="matrix"></canvas>
+
+  <h1 id="title">⚡ EDCELL-TECH</h1>
+
+  <div class="menu" id="menu">
+    <a href="https://usuario2207ed-hue.github.io/Portal-EDCELLTECH/">Portal EDCELLTECH</a>
+    <a href="https://usuario2207ed-hue.github.io/MyDoc/">MyDoc</a>
+    <a href="https://usuario2207ed-hue.github.io/Dama/">Dama</a>
+    <a href="https://usuario2207ed-hue.github.io/Sistema-Financeiro/">Sistema Financeiro</a>
+    <a href="https://usuario2207ed-hue.github.io/Atributos---Seguranca/">Atributos Segurança</a>
+    <a href="https://usuario2207ed-hue.github.io/RODOCELL/">RODOCELL</a>
+    <a href="https://usuario2207ed-hue.github.io/Troll-Gamer/">Troll Gamer</a>
+    <a href="https://usuario2207ed-hue.github.io/Snake/">Snake</a>
+    <a href="https://usuario2207ed-hue.github.io/Monitor-de-Tr-fego-de-Rede/">Monitor de Tráfego</a>
+    <a href="https://usuario2207ed-hue.github.io/Calculadora/">Calculadora</a>
+    <a href="https://usuario2207ed-hue.github.io/5W2H-ISHIKAWA/">5W2H & Ishikawa</a>
+    <a href="https://usuario2207ed-hue.github.io/Ferramenta-PDCA/">PDCA</a>
+    <a href="https://usuario2207ed-hue.github.io/TETRIS/">Tetris</a>
+    <a href="https://usuario2207ed-hue.github.io/Xadrez/">Xadrez</a>
+    <a href="https://usuario2207ed-hue.github.io/Jogos-Online/">Jogos Online</a>
+    <a href="https://usuario2207ed-hue.github.io/Rastreador-Bloqueador-de-Celulares/">Rastreador</a>
+    <a href="https://usuario2207ed-hue.github.io/Calendario/">Calendário</a>
+    <a href="https://usuario2207ed-hue.github.io/Relogio-Online/">Relógio Online</a>
+    <a href="https://usuario2207ed-hue.github.io/Dork-Finder/">Dork Finder</a>
+    <a href="https://usuario2207ed-hue.github.io/Apps-Essenciais/">Apps Essenciais</a>
+    <a href="https://usuario2207ed-hue.github.io/Ferramentas-TI/">Ferramentas TI</a>
+    <a href="https://usuario2207ed-hue.github.io/IAs-Gratuitas/">IAs Gratuitas</a>
+  </div>
+
+  <footer>🏗️ Desenvolvido por: EDCELL-TECH</footer>
+
+<script>
+const title = document.getElementById("title");
+
+function neonFlicker(callback) {
+  let elapsed = 0;
+  let intensity = 0;
+  const interval = setInterval(() => {
+    elapsed += 100;
+    intensity += 0.02;
+    if (elapsed < 60000) {
+      // Simula falha leve, mal contato
+      title.style.opacity = (Math.random() < 0.05) ? 0.4 : 1;
+    } else {
+      // Piscar cada vez mais rápido
+      title.style.opacity = Math.abs(Math.sin(intensity));
+    }
+  }, 100);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    title.style.opacity = 1;
+    callback();
+  }, 75000); // Após 75s explode
+}
+
+// Explosão de letras
+function explodeTitle() {
+  const text = title.innerText;
+  const rect = title.getBoundingClientRect();
+
+  // Som de explosão
+  const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctxAudio.createOscillator();
+  const gain = ctxAudio.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(60, ctxAudio.currentTime);
+  gain.gain.setValueAtTime(1, ctxAudio.currentTime);
+  osc.connect(gain).connect(ctxAudio.destination);
+  osc.start();
+  osc.frequency.exponentialRampToValueAtTime(0.01, ctxAudio.currentTime + 1);
+  osc.stop(ctxAudio.currentTime + 1);
+
+  // Esconde o título
+  title.style.visibility = "hidden";
+
+  // Letras voando
+  for (let char of text) {
+    if (char.trim() === "") continue;
+    const span = document.createElement("span");
+    span.innerText = char;
+    span.className = "letter";
+    span.style.left = rect.left + rect.width/2 + "px";
+    span.style.top = rect.top + rect.height/2 + "px";
+    span.style.setProperty("--x", (Math.random() * window.innerWidth - window.innerWidth/2) + "px");
+    span.style.setProperty("--y", (Math.random() * window.innerHeight - window.innerHeight/2) + "px");
+    document.body.appendChild(span);
+    setTimeout(() => span.remove(), 5000);
+  }
+
+  // Volta após 10s
+  setTimeout(() => {
+    title.style.visibility = "visible";
+    startLoop(); // Reinicia loop
+  }, 10000);
+}
+
+function startLoop() {
+  neonFlicker(explodeTitle);
+}
+startLoop();
+
+// Clique nos botões
+document.querySelectorAll(".menu a").forEach(link => {
+  link.addEventListener("click", function(e){
+    e.preventDefault();
+    const el = this;
+    el.classList.add("clicked");
+
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(600, ctx.currentTime);
+    gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+    oscillator.connect(gainNode).connect(ctx.destination);
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + 0.2);
+
+    setTimeout(()=>{ window.location.href = el.href; }, 1000);
+  });
+});
+
+// Fundo Matrix
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+let width = window.innerWidth;
+let height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
+
+const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const fontSize = 14;
+const columns = Math.floor(width / fontSize);
+const drops = Array(columns).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
+  ctx.fillRect(0,0,width,height);
+  ctx.fillStyle = "#0f0";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 50);
+
+window.addEventListener("resize", () => {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+});
+</script>
+</body>
+</html>
