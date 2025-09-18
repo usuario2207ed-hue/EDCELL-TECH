@@ -10,8 +10,6 @@ O Painel ⚡ EDCELL-TECH é uma interface moderna que reúne vários links e fer
 
 ✔️ Fácil de usar: clique nos botões para abrir os sites e ferramentas sem complicações.
 
-📌 Sempre atualizado: adicione ou remova links rapidamente conforme sua necessidade.
-
 ---
 
 Pode ser usado direto no navegador ou instalado como um **aplicativo** no celular/PC.
@@ -20,7 +18,7 @@ Pode ser usado direto no navegador ou instalado como um **aplicativo** no celula
 
 ### 🚀 Como usar
 1. Acesse o app neste link:  
-   👉 https://usuario2207ed-hue.github.io/MyDoc/ 
+   👉 https://usuario2207ed-hue.github.io/EDCELL-TECH/ 
 
 2. No navegador do **celular (Chrome/Edge)**:  
    - Abra o menu (⋮)  
