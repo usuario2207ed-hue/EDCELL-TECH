@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>🔋 EDCELL-TECH</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body {
     margin: 0;
@@ -28,11 +29,11 @@
 
   h1 {
     text-align: center;
-    font-size: 36px;
-    margin: 40px 0 20px 0;
+    font-size: 40px; /* Aumentado para telas pequenas */
+    margin: 60px 0 30px 0;
     position: relative;
     color: #0f0;
-    text-shadow: 0 0 8px #0f0;
+    text-shadow: 0 0 12px #0f0;
     transition: opacity 0.1s;
   }
 
@@ -42,19 +43,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 14px;
+    gap: 10px; /* espaçamento maior */
     z-index: 2;
+    padding-bottom: 20px;
   }
 
   .menu a {
     text-decoration: none;
     color: #0f0;
     border: 2px solid #0f0;
-    padding: 14px 28px;
-    border-radius: 8px;
-    width: 260px;
+    padding: 18px 36px; /* botões maiores */
+    border-radius: 12px;
+    width: 80%; /* ocupa mais espaço em telas pequenas */
+    max-width: 300px;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px; /* fonte maior */
     font-weight: bold;
     position: relative;
     background: rgba(0,0,0,0.6);
@@ -63,7 +66,7 @@
   }
 
   .menu a:hover {
-    background: rgba(0, 255, 0, 0.15);
+    background: rgba(0, 255, 0, 0.2);
     transform: scale(1.05);
   }
 
@@ -76,17 +79,16 @@
     100% { transform: scale(0.1) translateY(300px) rotate(720deg); opacity: 0; }
   }
 
-footer {
+  footer {
     background: transparent;
     color: #0f0;
     text-align: center;
-    padding: 12px;
-    font-size: 14px;
+    padding: 16px;
+    font-size: 16px; /* maior para celular */
     animation: blink 1s step-start infinite;
     animation-delay: 10s;
     z-index: 2;
-}
-
+  }
 
   @keyframes blink {
     0%, 49% { opacity: 1; }
@@ -95,12 +97,12 @@ footer {
 
   .letter {
     position: fixed;
-    font-size: 40px;
+    font-size: 60px; /* maior para telas pequenas */
     color: #0f0;
     pointer-events: none;
     animation: explode 5s forwards;
     z-index: 10;
-    text-shadow: 0 0 12px #0f0, 0 0 24px #0f0;
+    text-shadow: 0 0 18px #0f0, 0 0 36px #0f0;
   }
 
   @keyframes explode {
@@ -113,7 +115,7 @@ footer {
 
   <canvas id="matrix"></canvas>
 
-  <h1 id="title">⚡ EDCELL-TECH</h1>
+  <h1 id="title">⚡EDCELL-TECH🔌</h1>
 
   <div class="menu" id="menu">
     <a href="https://usuario2207ed-hue.github.io/Portal-EDCELLTECH/">Portal EDCELLTECH</a>
@@ -140,7 +142,7 @@ footer {
     <a href="https://usuario2207ed-hue.github.io/IAs-Gratuitas/">IAs Gratuitas</a>
   </div>
 
-  <footer>🏗️ Desenvolvido por: EDCELL-TECH</footer>
+  <footer>🏗️ Desenvolvido por EDCELL-TECH</footer>
 
 <script>
 const title = document.getElementById("title");
@@ -152,10 +154,8 @@ function neonFlicker(callback) {
     elapsed += 100;
     intensity += 0.02;
     if (elapsed < 60000) {
-      // Simula falha leve, mal contato
       title.style.opacity = (Math.random() < 0.05) ? 0.4 : 1;
     } else {
-      // Piscar cada vez mais rápido
       title.style.opacity = Math.abs(Math.sin(intensity));
     }
   }, 100);
@@ -164,15 +164,12 @@ function neonFlicker(callback) {
     clearInterval(interval);
     title.style.opacity = 1;
     callback();
-  }, 75000); // Após 75s explode
+  }, 75000);
 }
 
-// Explosão de letras
 function explodeTitle() {
   const text = title.innerText;
   const rect = title.getBoundingClientRect();
-
-  // Som de explosão
   const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
   const osc = ctxAudio.createOscillator();
   const gain = ctxAudio.createGain();
@@ -184,10 +181,8 @@ function explodeTitle() {
   osc.frequency.exponentialRampToValueAtTime(0.01, ctxAudio.currentTime + 1);
   osc.stop(ctxAudio.currentTime + 1);
 
-  // Esconde o título
   title.style.visibility = "hidden";
 
-  // Letras voando
   for (let char of text) {
     if (char.trim() === "") continue;
     const span = document.createElement("span");
@@ -201,10 +196,9 @@ function explodeTitle() {
     setTimeout(() => span.remove(), 5000);
   }
 
-  // Volta após 10s
   setTimeout(() => {
     title.style.visibility = "visible";
-    startLoop(); // Reinicia loop
+    startLoop();
   }, 10000);
 }
 
@@ -213,7 +207,6 @@ function startLoop() {
 }
 startLoop();
 
-// Clique nos botões
 document.querySelectorAll(".menu a").forEach(link => {
   link.addEventListener("click", function(e){
     e.preventDefault();
@@ -234,7 +227,6 @@ document.querySelectorAll(".menu a").forEach(link => {
   });
 });
 
-// Fundo Matrix
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 let width = window.innerWidth;
@@ -243,7 +235,7 @@ canvas.width = width;
 canvas.height = height;
 
 const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const fontSize = 14;
+const fontSize = 24; // Aumentado para celular
 const columns = Math.floor(width / fontSize);
 const drops = Array(columns).fill(1);
 
