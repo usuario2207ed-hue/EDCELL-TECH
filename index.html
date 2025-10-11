@@ -2,8 +2,18 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>🔋 EDCELL-TECH</title>
+<title>EDCELL-TECH</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="google-adsense-account" content="ca-pub-3403987938490863">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3403987938490863"
+     crossorigin="anonymous"></script>
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<meta name="theme-color" content="#4f8cff">
+
 <style>
   body {
     margin: 0;
@@ -70,13 +80,15 @@
     transform: scale(1.05);
   }
 
+  /* Clique: apenas pulso, sem sumir */
   .menu a.clicked {
-    animation: goBack 1s forwards;
+    animation: clickPulse 0.3s ease;
   }
 
-  @keyframes goBack {
-    0% { transform: scale(1) translateY(0) rotate(0); opacity: 1; }
-    100% { transform: scale(0.1) translateY(300px) rotate(720deg); opacity: 0; }
+  @keyframes clickPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
   }
 
   footer {
@@ -110,7 +122,6 @@
     100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(2); }
   }
 
-  /* === POPUP DE DOAÇÃO === */
   .popup {
     position: fixed;
     top: 0; left: 0;
@@ -164,10 +175,9 @@
     cursor: pointer;
   }
 
-  /* === BOTÃO FIXO APÓS FECHAR POPUP === */
   #doarBtnFixo {
     position: relative;
-    display: none;
+    display: block;
     text-align: center;
     margin: 10px auto;
     padding: 10px 28px;
@@ -194,7 +204,7 @@
 
   <h1 id="title">⚡EDCELL-TECH🔌</h1>
 
-  <button id="doarBtnFixo" onclick="window.open('https://link.mercadopago.com.br/abrindoportas','_blank')">💚 Doe</button>
+  <button id="doarBtnFixo">💚 Doe</button>
 
   <div class="menu" id="menu">    
     <a href="https://usuario2207ed-hue.github.io/Servicos-Digitais/">Serviços Digitais</a>    
@@ -206,6 +216,7 @@
     <a href="https://usuario2207ed-hue.github.io/Calendario/">Calendário</a>
     <a href="https://usuario2207ed-hue.github.io/Relogio-Online/">Relógio Online</a>    
     <a href="https://usuario2207ed-hue.github.io/Dama/">Damas</a>
+    <a href="https://usuario2207ed-hue.github.io/Pega-Pernilongo/">Pega Pernilongo</a>
     <a href="https://usuario2207ed-hue.github.io/RODOCELL/">RodoCell</a>
     <a href="https://usuario2207ed-hue.github.io/Snake/">Snake</a>
     <a href="https://usuario2207ed-hue.github.io/TETRIS/">Tetris</a>
@@ -262,16 +273,6 @@ function neonFlicker(callback) {
 function explodeTitle() {
   const text = title.innerText;
   const rect = title.getBoundingClientRect();
-  const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctxAudio.createOscillator();
-  const gain = ctxAudio.createGain();
-  osc.type = 'triangle';
-  osc.frequency.setValueAtTime(60, ctxAudio.currentTime);
-  gain.gain.setValueAtTime(1, ctxAudio.currentTime);
-  osc.connect(gain).connect(ctxAudio.destination);
-  osc.start();
-  osc.frequency.exponentialRampToValueAtTime(0.01, ctxAudio.currentTime + 1);
-  osc.stop(ctxAudio.currentTime + 1);
 
   title.style.visibility = "hidden";
 
@@ -303,19 +304,9 @@ document.querySelectorAll(".menu a").forEach(link => {
   link.addEventListener("click", function(e){
     e.preventDefault();
     const el = this;
-    el.classList.add("clicked");
+    el.classList.add("clicked"); // animação pulso, sem sumir
 
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-    oscillator.type = "square";
-    oscillator.frequency.setValueAtTime(600, ctx.currentTime);
-    gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
-    oscillator.connect(gainNode).connect(ctx.destination);
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + 0.2);
-
-    setTimeout(()=>{ window.location.href = el.href; }, 1000);
+    setTimeout(()=>{ window.location.href = el.href; }, 300); // navega após pulso
   });
 });
 
@@ -356,33 +347,72 @@ window.addEventListener("resize", () => {
 });
 
 window.addEventListener("load", () => {
-  const popup = document.createElement("div");
-  popup.className = "popup";
-  popup.innerHTML = `
-    <div class="popup-content">
-      <div class="popup-close" id="popupClose">✖</div>
-      <h2>💚 Ajude o desenvolvedor — qualquer valor é bem-vindo!</h2>
-      <button id="doarBtn">Doação 💚</button>
-    </div>
-  `;
-  document.body.appendChild(popup);
 
-  const doarBtn = document.getElementById("doarBtn");
-  const popupClose = document.getElementById("popupClose");
-  let clicouDoar = false;
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(reg => console.log("✅ Service Worker registrado:", reg))
+      .catch(err => console.warn("❌ Falha ao registrar SW:", err));
+  }
 
-  doarBtn.addEventListener("click", () => {
-    clicouDoar = true;
-    window.open("https://link.mercadopago.com.br/abrindoportas", "_blank");
-    popup.remove();
+  let deferredPrompt;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const installBtn = document.createElement("button");
+    installBtn.textContent = "📲 Instalar App";
+    installBtn.style.position = "fixed";
+    installBtn.style.bottom = "20px";
+    installBtn.style.right = "20px";
+    installBtn.style.padding = "12px 24px";
+    installBtn.style.fontSize = "18px";
+    installBtn.style.background = "#00cc00";
+    installBtn.style.color = "#fff";
+    installBtn.style.border = "none";
+    installBtn.style.borderRadius = "8px";
+    installBtn.style.cursor = "pointer";
+    installBtn.style.zIndex = "9999";
+    installBtn.style.animation = "pulse 1.2s infinite alternate";
+    document.body.appendChild(installBtn);
+
+    installBtn.addEventListener("click", async () => {
+      installBtn.remove();
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log("Resultado da instalação:", outcome);
+      deferredPrompt = null;
+    });
   });
 
-  popupClose.addEventListener("click", () => {
-    popup.remove();
-    if (!clicouDoar) {
-      const btnFixo = document.getElementById("doarBtnFixo");
-      btnFixo.style.display = "block";
-    }
+  const doarBtnFixo = document.getElementById("doarBtnFixo");
+  doarBtnFixo.addEventListener("click", () => {
+    const popup = document.createElement("div");
+    popup.className = "popup";
+    popup.innerHTML = `
+      <div class="popup-content">
+        <div class="popup-close" id="popupClose">✖</div>
+        <h2>💚 Ajude o desenvolvedor — qualquer valor é bem-vindo!</h2>
+        <button id="doarBtn">Doação 💚</button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    const doarBtn = document.getElementById("doarBtn");
+    const popupClose = document.getElementById("popupClose");
+    let clicouDoar = false;
+
+    doarBtn.addEventListener("click", () => {
+      clicouDoar = true;
+      window.open("https://link.mercadopago.com.br/abrindoportas", "_blank");
+      popup.remove();
+    });
+
+    popupClose.addEventListener("click", () => {
+      popup.remove();
+      if (!clicouDoar) {
+        doarBtnFixo.style.display = "block";
+      }
+    });
   });
 });
 </script>
