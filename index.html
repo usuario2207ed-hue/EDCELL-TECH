@@ -204,11 +204,12 @@
 
   <h1 id="title">⚡EDCELL-TECH🔌</h1>
 
-  <button id="doarBtnFixo">💚 Doe</button>
+  <button id="doarBtnFixo">💚 Doação</button>
 
   <div class="menu" id="menu">    
-    <a href="https://usuario2207ed-hue.github.io/Servicos-Digitais/">Serviços Digitais</a>    
-    <a href="https://assistenciatecnica-tech.github.io/">Portal EDCELLTECH</a>
+    <a href="https://usuario2207ed-hue.github.io/Servicos-Digitais/">Serviços Digitais</a>
+    <a href="https://usuario2207ed-hue.github.io/Ferramentas-OSINT/">Ferramentas OSINT</a>
+    <a href="https://usuario2207ed-hue.github.io/Comunicacao-Analise-Online/">Comunicação e Análise</a>   
     <a href="https://rishonshowcase-dev.github.io/">Notícias de Tecnologia</a>       
     <a href="https://usuario2207ed-hue.github.io/Teste-de-Velocidade/">Teste de Velocidade</a>
     <a href="https://usuario2207ed-hue.github.io/Monitor-de-Tr-fego-de-Rede/">Monitor de Tráfego</a>
@@ -217,7 +218,7 @@
     <a href="https://usuario2207ed-hue.github.io/Calendario/">Calendário</a>
     <a href="https://usuario2207ed-hue.github.io/Relogio-Online/">Relógio Online</a>    
     <a href="https://usuario2207ed-hue.github.io/Dama/">Damas</a>
-    <a href="https://usuario2207ed-hue.github.io/Pega-Pernilongo/">Pega Pernilongo</a>
+    <a href="https://usuario2207ed-hue.github.io/">Pega Pernilongo</a>
     <a href="https://usuario2207ed-hue.github.io/RODOCELL/">RodoCell</a>
     <a href="https://usuario2207ed-hue.github.io/Snake/">Snake</a>
     <a href="https://usuario2207ed-hue.github.io/TETRIS/">Tetris</a>
@@ -242,8 +243,7 @@
     <a href="https://usuario2207ed-hue.github.io/MyDoc/">Carteira Digital</a>
     <a href="https://usuario2207ed-hue.github.io/5W2H-ISHIKAWA/">5W2H & Ishikawa</a>
     <a href="https://usuario2207ed-hue.github.io/Ferramenta-PDCA/">PDCA</a>
-    <a href="https://usuario2207ed-hue.github.io/Ferramentas-OSINT/">Ferramentas OSINT</a>
-    <a href="https://usuario2207ed-hue.github.io/Comunicacao-Analise-Online/">Comunicação e Análise</a> 
+    <a href="https://assistenciatecnica-tech.github.io/">Portal EDCELLTECH</a>   
   </div>
 
   <footer>🏗️ Desenvolvido por EDCELL-TECH</footer>
@@ -305,7 +305,7 @@ document.querySelectorAll(".menu a").forEach(link => {
   link.addEventListener("click", function(e){
     e.preventDefault();
     const el = this;
-    el.classList.add("clicked"); // animação pulso, sem sumir
+    el.classList.add("clicked"); 
 
     setTimeout(()=>{ window.location.href = el.href; }, 300); // navega após pulso
   });
@@ -392,8 +392,9 @@ window.addEventListener("load", () => {
     popup.innerHTML = `
       <div class="popup-content">
         <div class="popup-close" id="popupClose">✖</div>
-        <h2>💚 Ajude o desenvolvedor — qualquer valor é bem-vindo!</h2>
-        <button id="doarBtn">Doação 💚</button>
+        <h2>“O Senhor te concederá abundância de bens... abrirá o céu, para dar chuva à tua terra e abençoar todo o trabalho das tuas mãos.”</h2>
+        <h2>Deuteronômio 28:11-12</h2>
+        <button id="doarBtn">Doe 💚</button>
       </div>
     `;
     document.body.appendChild(popup);
@@ -419,4 +420,5 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
 
