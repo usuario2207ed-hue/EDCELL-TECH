@@ -23,7 +23,6 @@ function neonFlicker(callback) {
 function explodeTitle() {
   const text = title.innerText;
   const rect = title.getBoundingClientRect();
-
   title.style.visibility = "hidden";
 
   for (let char of text) {
@@ -45,9 +44,7 @@ function explodeTitle() {
   }, 10000);
 }
 
-function startLoop() {
-  neonFlicker(explodeTitle);
-}
+function startLoop() { neonFlicker(explodeTitle); }
 startLoop();
 
 document.querySelectorAll(".accordion-panel a").forEach(link => {
@@ -77,42 +74,6 @@ accButtons.forEach(btn => {
   });
 });
 
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-let width = window.innerWidth;
-let height = window.innerHeight;
-canvas.width = width;
-canvas.height = height;
-
-const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const fontSize = 24;
-const columns = Math.floor(width / fontSize);
-const drops = Array(columns).fill(1);
-
-function drawMatrix() {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  ctx.fillRect(0,0,width,height);
-  ctx.fillStyle = "#0f0";
-  ctx.font = fontSize + "px monospace";
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = letters[Math.floor(Math.random() * letters.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-    drops[i]++;
-  }
-}
-setInterval(drawMatrix, 50);
-
-window.addEventListener("resize", () => {
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.width = width;
-  canvas.height = height;
-});
-
 window.addEventListener("load", () => {
 
   if ("serviceWorker" in navigator) {
@@ -121,34 +82,15 @@ window.addEventListener("load", () => {
       .catch(err => console.warn("❌ Falha ao registrar SW:", err));
   }
 
-  let deferredPrompt;
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
+  const savedTheme = localStorage.getItem("temaEscolhido");
+  if(savedTheme === "tema2") {
+    window.location.href = "tema2.html";
+  }
 
-    const installBtn = document.createElement("button");
-    installBtn.textContent = "📲 Instalar App";
-    installBtn.style.position = "fixed";
-    installBtn.style.bottom = "20px";
-    installBtn.style.right = "20px";
-    installBtn.style.padding = "12px 24px";
-    installBtn.style.fontSize = "18px";
-    installBtn.style.background = "#00cc00";
-    installBtn.style.color = "#fff";
-    installBtn.style.border = "none";
-    installBtn.style.borderRadius = "8px";
-    installBtn.style.cursor = "pointer";
-    installBtn.style.zIndex = "9999";
-    installBtn.style.animation = "pulse 1.2s infinite alternate";
-    document.body.appendChild(installBtn);
-
-    installBtn.addEventListener("click", async () => {
-      installBtn.remove();
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log("Resultado da instalação:", outcome);
-      deferredPrompt = null;
-    });
+  const tema2Emoji = document.getElementById("tema2Emoji");
+  tema2Emoji.addEventListener("click", () => {
+    localStorage.setItem("temaEscolhido","tema2");
+    window.location.href = "tema2.html";
   });
 
   const doarBtnFixo = document.getElementById("doarBtnFixo");
@@ -160,7 +102,7 @@ window.addEventListener("load", () => {
         <div class="popup-close" id="popupClose">✖</div>
         <h2>“O Senhor te concederá abundância de bens... abrirá o céu, para dar chuva à tua terra e abençoar todo o trabalho das tuas mãos.”</h2>
         <h2>Deuteronômio 28:11-12</h2>
-        <button id="doarBtn">Doe 💚</button>
+        <button id="doarBtn">Doe ❤️</button>
       </div>
     `;
     document.body.appendChild(popup);
@@ -182,4 +124,5 @@ window.addEventListener("load", () => {
       }
     });
   });
+
 });
