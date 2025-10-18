@@ -116,7 +116,7 @@
     padding: 18px 30px;
     border-radius: 12px;
     text-align: center;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     background: rgba(0,0,0,0.6);
     transition: transform 0.4s ease, background 0.3s ease;
@@ -244,7 +244,6 @@
     to { transform: scale(1.08); box-shadow: 0 0 25px #00ff00; }
   }
 
-  /* Emoji tema5 no canto superior esquerdo */
   #tema5Emoji {
     position: fixed;
     top: 10px;
@@ -336,19 +335,16 @@
 
 
 <script>
-// === Redirecionamento automático se último tema era tema5 ===
 if(localStorage.getItem("temaEscolhido") === "tema5"){
   window.location.href = "tema5.html";
 }
 
-// Emoji tema5 clicável
 const tema5Emoji = document.getElementById("tema5Emoji");
 tema5Emoji.addEventListener("click", () => {
   localStorage.setItem("temaEscolhido","tema5");
   window.location.href = "tema5.html";
 });
 
-// ========= TÍTULO PISCANTE =========
 const title = document.getElementById("title");
 function neonFlicker(callback) {
   let elapsed = 0;
@@ -392,7 +388,6 @@ function explodeTitle() {
 function startLoop() { neonFlicker(explodeTitle); }
 startLoop();
 
-// ========= MENU ACORDEÃO =========
 document.querySelectorAll(".accordion-panel a").forEach(link => {
   link.addEventListener("click", function(e){
     e.preventDefault();
@@ -417,7 +412,6 @@ accButtons.forEach(btn => {
   });
 });
 
-// ========= 🐠 ANIMAÇÃO DOS PEIXES =========
 const canvas = document.getElementById("ocean");
 const ctx = canvas.getContext("2d");
 let width = window.innerWidth;
@@ -484,7 +478,6 @@ window.addEventListener("resize", () => {
   canvas.height = height;
 });
 
-// ========= DOAÇÃO + PWA =========
 window.addEventListener("load", () => {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js")
@@ -552,3 +545,4 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
