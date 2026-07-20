@@ -1,0 +1,566 @@
+/* ==========================================================================
+   RESET & CONFIGURAÇÕES BASE
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg-main: #FFFFFF;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --text-muted: #9ca3af;
+    --accent-amber: #f59e0b;
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 8px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.06);
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+html, body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   LAYOUT E ESTRUTURA PRINCIPAL
+   ========================================================================== */
+.maintenance-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 4rem);
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Canvas Virtual de Operários em Loop */
+.construction-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ==========================================================================
+   CABEÇALHO (RELÓGIO)
+   ========================================================================== */
+.header-status {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.time-badge {
+    background: rgba(249, 250, 251, 0.8);
+    border: 1px solid #f3f4f6;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+    font-weight: 500;
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    backdrop-filter: blur(8px);
+}
+
+.time-badge .separator {
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   CONTEÚDO CENTRAL
+   ========================================================================== */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: auto 0;
+}
+
+/* Ícone Central Premium */
+.icon-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-hero-svg {
+    width: clamp(70px, 12vw, 110px);
+    height: auto;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.03));
+}
+
+/* Tipografia e Mensagens */
+.main-title {
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.emoji-indicator {
+    font-size: 1.2em;
+    margin-bottom: 0.2rem;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+.main-description {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+}
+
+.main-description strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Barra de Progresso Dinâmica */
+.progress-box {
+    width: 100%;
+    max-width: 450px;
+    margin-bottom: 3rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, var(--accent-amber), #fbbf24);
+    border-radius: 10px;
+    animation: infiniteProgress 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Grid de Métricas / Contadores Ativos */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 650px;
+    margin-bottom: 3rem;
+}
+
+.metric-card {
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.metric-value {
+    display: block;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.2rem;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* Grid de Status da Infraestrutura */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 900px;
+}
+
+.status-card {
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 14px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-align: left;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.status-card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
+}
+
+.border-online:hover { border-color: var(--accent-green); }
+.border-updating:hover { border-color: var(--accent-amber); }
+
+.status-icon {
+    font-size: 1.5rem;
+}
+
+.status-info h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.1rem;
+}
+
+.badge.online { color: var(--accent-green); }
+.badge.updating { color: var(--accent-amber); }
+
+/* Pontos de Status Pulsantes */
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot.pulse {
+    background-color: var(--accent-green);
+    animation: pulseDot 1.5s infinite alternate;
+}
+.dot.sync {
+    background-color: var(--accent-amber);
+    animation: rotateDot 2s infinite linear;
+}
+
+/* ==========================================================================
+   RODAPÉ & SUPORTE
+   ========================================================================== */
+.footer-container {
+    width: 100%;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.contact-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.mail-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.footer-divider {
+    border: 0;
+    height: 1px;
+    background: #f3f4f6;
+    margin: 1.5rem auto;
+    width: 100%;
+    max-width: 300px;
+}
+
+.copyright-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   ANIMAÇÕES CSS (LOOPS E INTERFACES)
+   ========================================================================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes infiniteProgress {
+    0% { left: -40%; width: 30%; }
+    50% { width: 50%; }
+    100% { left: 100%; width: 20%; }
+}
+
+@keyframes pulseDot {
+    0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+
+/* Elementos do Herói SVG */
+.gear-slow {
+    transform-origin: 32px 32px;
+    animation: rotateForever 12s linear infinite;
+}
+
+.wrench-bounce {
+    transform-origin: 17px 43px;
+    animation: wrenchAction 2.5s ease-in-out infinite;
+}
+
+@keyframes rotateForever {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes wrenchAction {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-15deg) translate(-1px, 1px); }
+}
+
+/* Pequenas Faíscas/Brilhos */
+.sparkle-point {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--accent-amber);
+    border-radius: 50%;
+    opacity: 0;
+}
+.sparkle-point.p1 { top: 15%; left: 65%; animation: flashSparkle 2s infinite 0.5s; }
+.sparkle-point.p2 { top: 45%; left: 25%; animation: flashSparkle 2.5s infinite 1.2s; }
+
+@keyframes flashSparkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.5); filter: drop-shadow(0 0 3px var(--accent-amber)); }
+}
+
+/* ==========================================================================
+   ANIMAÇÃO DINÂMICA DOS OPERÁRIOS (CANVAS)
+   ========================================================================== */
+.crane-wrapper {
+    position: absolute;
+    width: clamp(80px, 15vw, 150px);
+    opacity: 0.6;
+}
+.crane-wrapper.left { top: 10%; left: 2%; }
+
+.crane-box {
+    animation: liftBox 4s ease-in-out infinite alternative;
+    transform-origin: center;
+}
+
+@keyframes liftBox {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-25px); }
+}
+
+/* Operários Flutuantes executando ações fictícias */
+.worker-unit {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.5s ease;
+}
+
+.worker-alpha {
+    bottom: 25%;
+    left: 8%;
+    animation: workerWalkAlpha 16s linear infinite;
+}
+
+.worker-beta {
+    top: 20%;
+    right: 8%;
+    animation: workerFloatBeta 8s ease-in-out infinite alternative;
+}
+
+.worker-bubble {
+    background: #1f2937;
+    color: #fff;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    position: absolute;
+    top: -15px;
+    white-space: nowrap;
+    opacity: 0;
+    animation: bubblePop 4s ease-in-out infinite;
+}
+
+@keyframes workerWalkAlpha {
+    0% { transform: translateX(0) scaleX(1); }
+    45% { transform: translateX(40px) scaleX(1); }
+    50% { transform: translateX(40px) scaleX(-1); }
+    95% { transform: translateX(0) scaleX(-1); }
+    100% { transform: translateX(0) scaleX(1); }
+}
+
+@keyframes workerFloatBeta {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(15px) rotate(5deg); }
+}
+
+@keyframes bubblePop {
+    0%, 100%, 80% { opacity: 0; transform: scale(0.8); }
+    30%, 60% { opacity: 1; transform: scale(1); }
+}
+
+.gear-primary {
+    position: absolute;
+    bottom: 8%;
+    right: 4%;
+    width: 80px;
+    height: 80px;
+    opacity: 0.5;
+    animation: rotateForever 20s linear infinite reverse;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES / RESPONSIVIDADE ULTRA PARA TELAS (SUPORTE DE SMARTPHONE A TV)
+   ========================================================================== */
+@media (max-width: 600px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .worker-unit, .crane-wrapper {
+        display: none; /* Esconde do mobile pequeno para priorizar otimização de processamento */
+    }
+}
+
+@media (min-width: 1920px) {
+    /* Otimização para Smart TVs e Displays 4K */
+    :root { font-size: 19px; }
+    .maintenance-container { max-width: 1800px; padding: 6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Respeito às configurações de acessibilidade do usuário */
+    *, .gear-slow, .wrench-bounce, .progress-bar-fill, .worker-alpha, .worker-beta, .crane-box {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================================================
+   BOTÃO FLUTUANTE DO WHATSAPP
+   ========================================================================== */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    animation: pulseWhatsapp 2s infinite;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    background-color: #128c7e;
+}
+
+.whatsapp-icon {
+    width: 35px;
+    height: 35px;
+}
+
+@keyframes pulseWhatsapp {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
